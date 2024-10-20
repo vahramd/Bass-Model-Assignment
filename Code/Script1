@@ -1,0 +1,37 @@
+import numpy as np
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
+def bass_model(t, p, q, M):
+  
+    return M * (1 - np.exp(-(p + q) * t)) / (1 + (q/p) * np.exp(-(p + q) * t))
+
+
+years = np.array([2015, 2016, 2017, 2018, 2019]) - 2015
+adoption_data = np.array([5000, 50000, 200000, 400000, 625000])  
+
+initial_guess = [0.01, 0.4, 20000000]
+
+
+popt, _ = curve_fit(bass_model, years, adoption_data, p0=initial_guess)
+
+
+p_est, q_est, M_est = popt
+
+
+predicted_adoption = bass_model(years, p_est, q_est, M_est)
+
+
+plt.figure(figsize=(9, 4))
+plt.plot(years + 2015, adoption_data, 'o', label='Observed Data')
+plt.plot(years + 2015, predicted_adoption, '-', label=f'Bass Model Fit\np={p_est:.4f}, q={q_est:.4f}, M={int(M_est)}')
+plt.title("Tesla Autopilot Adoption - Bass Diffusion Model")
+plt.xlabel("Year")
+plt.ylabel("Cumulative Adoption")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+print(p_est)
+print(q_est)
+print(M_est) 
