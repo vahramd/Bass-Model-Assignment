@@ -1,0 +1,24 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def bass_model(t, p, q, M):
+    return M * (1 - np.exp(-(p + q) * t)) / (1 + (q/p) * np.exp(-(p + q) * t))
+
+
+years_future = np.arange(0, 11, 1)
+p_drivepilot = 0.02
+q_drivepilot = 0.4
+M_drivepilot = 1000000
+
+predicted_drivepilot_adoption = bass_model(years_future, p_drivepilot, q_drivepilot, M_drivepilot)
+
+plt.figure(figsize=(8, 4))
+plt.plot(years_future + 2024, predicted_drivepilot_adoption, 'r-', label=f'Mercedes-Benz Drive Pilot\np={p_drivepilot}, q={q_drivepilot}, M={M_drivepilot}')
+plt.title("Predicted Diffusion of Mercedes-Benz Drive Pilot (2024-2034)")
+plt.xlabel("Year")
+plt.ylabel("Cumulative Adoption")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+print(predicted_drivepilot_adoption)
