@@ -1,0 +1,22 @@
+import numpy as np
+import pandas as pd
+
+def new_adopters_per_year(t, p, q, M):
+    return M * ((p + q)**2 / p) * (np.exp(-(p + q) * t) / (1 + (q/p) * np.exp(-(p + q) * t))**2)
+
+p_est = 0.0422
+q_est = 0.9815
+M_est = 880672  
+
+
+years = np.arange(0, 10, 1)  
+
+new_adopters = new_adopters_per_year(years, p_est, q_est, M_est)
+
+
+adoption_by_year = pd.DataFrame({
+    'Year': years + 2025,  
+    'New_Adopters': new_adopters.astype(int)
+})
+
+print(adoption_by_year)
